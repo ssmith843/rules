@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workspace": {
+      "type": "String"
+    }
+  },
+  "resources": [
+    {
+      "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/7c3d5b8e-0ac4-4e79-a69e-63e854d5a2b1')]",
+      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/7c3d5b8e-0ac4-4e79-a69e-63e854d5a2b1')]",
+      "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+      "kind": "Scheduled",
+      "apiVersion": "2023-12-01-preview",
+      "properties": {
+        "displayName": "Multiple Failed Sign-ins from Same IP (Rule 2)",
+        "description": "Detects when more than 5 failed sign-in attempts occur from the same IP address within a 10-minute window.",
+        "severity": "High",
+        "enabled": true,
+        "query": "SigninLogs\n| where ResultType != 0\n| summarize FailedCount = count() by IPAddress, bin(TimeGenerated, 10m)\n| where FailedCount > 5\n| extend timestamp = TimeGenerated, IPCustomEntity = IPAddress",
+        "queryFrequency": "PT10M",
+        "queryPeriod": "PT10M",
+        "triggerOperator": "GreaterThan",
+        "triggerThreshold": 0,
+        "suppressionDuration": "PT1H",
+        "suppressionEnabled": false,
+        "tactics": [ "CredentialAccess", "Persistence" ],
+        "techniques": [ "T1110" ],
+        "subTechniques": [],
+        "incidentConfiguration": {
+          "createIncident": true,
+          "groupingConfiguration": {
+            "enabled": true,
+            "reopenClosedIncident": false,
+            "lookbackDuration": "PT1H",
+            "matchingMethod": "AllEntities",
+            "groupByEntities": [ "IPAddress" ],
+            "groupByAlertDetails": [],
+            "groupByCustomDetails": []
+          }
+        },
+        "eventGroupingSettings": {
+          "aggregationKind": "SingleAlert"
+        },
+        "alertDetailsOverride": null,
+        "customDetails": {
+          "FailedAttempts": "FailedCount",
+          "SourceIP": "IPAddress"
+        },
+        "entityMappings": [
+          {
+            "entityType": "IP",
+            "fieldMappings": [
+              { "identifier": "Address", "columnName": "IPAddress" }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
