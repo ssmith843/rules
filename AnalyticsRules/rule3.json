@@ -8,13 +8,13 @@
   },
   "resources": [
     {
-      "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/7c3d5b8e-0ac4-4e79-a69e-63e854d5a2b1')]",
-      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/7c3d5b8e-0ac4-4e79-a69e-63e854d5a2b1')]",
+      "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/4c9fa4c2-df33-4a4c-9a18-1aeb0791f90a')]",
+      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/4c9fa4c2-df33-4a4c-9a18-1aeb0791f90a')]",
       "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
       "kind": "Scheduled",
       "apiVersion": "2023-12-01-preview",
       "properties": {
-        "displayName": "Multiple Failed Sign-ins from Same IP (Rule 2)",
+        "displayName": "Multiple Failed Sign-ins from Same IP (Rule 3",
         "description": "Detects when more than 5 failed sign-in attempts occur from the same IP address within a 10-minute window.",
         "severity": "High",
         "enabled": true,
